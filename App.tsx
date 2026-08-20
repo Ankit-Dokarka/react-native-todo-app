@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
 import TaskInput from './src/components/TaskInput';
 import Filters from './src/components/Filters';
+import TaskList from './src/components/TaskList';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Header />
       <TaskInput />
       <Filters />
+      <TaskList />
     </View>
   );
 }
