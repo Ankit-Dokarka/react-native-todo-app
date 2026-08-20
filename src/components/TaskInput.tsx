@@ -1,16 +1,31 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
+import { useState } from 'react';
 
-const TaskInput = () => {
+type TaskInputProps = {
+  addTask: (task: string) => void;
+};
+
+const TaskInput = ({ addTask }: TaskInputProps) => {
+  const [taskInput, setTaskInput] = useState('');
   return (
     <View style={styles.inputContainer}>
       <TextInput
+        style={styles.input}
         placeholder="Add a new task.."
-        placeholderTextColor="#757575"
+        placeholderTextColor="#cec7c7"
+        onChangeText={Text => setTaskInput(Text)}
+        value={taskInput}
       />
-      <View style={styles.buttonContainer}>
+      <Pressable
+        style={styles.buttonContainer}
+        onPress={() => {
+          addTask(taskInput);
+          setTaskInput('');
+        }}
+      >
         <MaterialDesignIcons name="plus" size={24} color="#fff" />
-      </View>
+      </Pressable>
     </View>
   );
 };
@@ -33,5 +48,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF5C00',
     padding: 10,
     borderRadius: 25,
+  },
+  input: {
+    color: '#fff',
   },
 });

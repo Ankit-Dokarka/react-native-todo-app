@@ -1,30 +1,55 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { useState } from 'react';
 
-const TaskList = () => {
-  const [completed, setCompleted] = useState(true);
+type Tasks = {
+  id: string;
+  title: string;
+  date: string;
+  isCompleted: boolean;
+};
 
+type TaskListProps = {
+  tasks: Tasks[];
+  toggleTask: (id: string) => void;
+};
+
+const TaskList = ({ tasks, toggleTask }: TaskListProps) => {
   return (
     <View style={styles.taskView}>
-      <View style={styles.leftSide}>
-        <Pressable style={styles.checkbox}>
-          <MaterialDesignIcons
-            name={completed ? 'checkbox-marked' : 'checkbox-blank-outline'}
-            size={24}
-            color="#FF5C00"
-          />
-        </Pressable>
+      {tasks.map(task => (
+        <View key={task.id} style={styles.taskView}>
+          <View style={styles.leftSide}>
+            <Pressable
+              style={styles.checkbox}
+              onPress={() => toggleTask(task.id)}
+            >
+              <MaterialDesignIcons
+                name={
+                  task.isCompleted
+                    ? 'checkbox-marked'
+                    : 'checkbox-blank-outline'
+                }
+                size={24}
+                color="#FF5C00"
+              />
+            </Pressable>
 
-        <View style={styles.taskInfo}>
-          <Text style={styles.taskTitle}>Design Homepage</Text>
-          <Text style={styles.taskDate}>20 Aug 2026</Text>
+            <View style={styles.taskInfo}>
+              <Text style={styles.taskTitle}>{task.title}</Text>
+
+              <Text style={styles.taskDate}>{task.date}</Text>
+            </View>
+          </View>
+
+          <Pressable style={styles.menuButton}>
+            <MaterialDesignIcons
+              name="dots-vertical"
+              size={22}
+              color="#71748D"
+            />
+          </Pressable>
         </View>
-      </View>
-
-      <Pressable style={styles.menuButton}>
-        <MaterialDesignIcons name="dots-vertical" size={22} color="#71748D" />
-      </Pressable>
+      ))}
     </View>
   );
 };
