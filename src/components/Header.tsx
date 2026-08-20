@@ -9,7 +9,7 @@ const Header = () => {
         <Text style={styles.subHeading}>What needs to be done today?</Text>
       </View>
       <View style={styles.iconContainer}>
-        <MaterialDesignIcons name="dots-vertical" size={24} color="#1A1A1A" />
+        <MaterialDesignIcons name="dots-vertical" size={24} color="#ffffff" />
       </View>
     </View>
   );
@@ -20,7 +20,7 @@ export default Header;
 const styles = StyleSheet.create({
   headingContainer: {
     paddingTop: 35,
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -28,18 +28,20 @@ const styles = StyleSheet.create({
   headingTitle: {
     fontSize: 30,
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   subHeading: {
-    color: '#777575',
+    color: '#A1A1A1',
     paddingLeft: 2,
     fontSize: 15,
   },
   iconContainer: {
     height: 50,
     width: 50,
-    backgroundColor: '#dee3e6',
+    backgroundColor: '#1E1E1E',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
+    borderColor: '#333333',
   },
 });
