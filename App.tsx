@@ -1,12 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 import Header from './src/components/Header';
 import TaskInput from './src/components/TaskInput';
+import Filters from './src/components/Filters';
 
 function App() {
   return (
     <View style={styles.screen}>
       <Header />
       <TaskInput />
+      <Filters />
     </View>
   );
 }

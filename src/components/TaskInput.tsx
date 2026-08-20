@@ -9,7 +9,7 @@ const TaskInput = () => {
         placeholderTextColor="#757575"
       />
       <View style={styles.buttonContainer}>
-        <MaterialDesignIcons name="plus" size={24} color="#" />
+        <MaterialDesignIcons name="plus" size={24} color="#fff" />
       </View>
     </View>
   );
