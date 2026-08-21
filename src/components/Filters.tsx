@@ -1,9 +1,13 @@
-import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-const Filters = () => {
-  const [activeTab, setActiveTab] = useState('All');
+type TabName = 'All' | 'Pending' | 'Completed';
 
+type FiltersProps = {
+  activeTab: TabName;
+  setActiveTab: (tab: TabName) => void;
+};
+
+const Filters = ({ activeTab, setActiveTab }: FiltersProps) => {
   return (
     <View style={styles.filterView}>
       <Pressable

@@ -15,6 +15,9 @@ type Tasks = {
 
 function App() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [activeTab, setActiveTab] = useState<'All' | 'Pending' | 'Completed'>(
+    'All',
+  );
 
   const addTask = (title: string) => {
     if (title.trim() === '') return;
@@ -49,8 +52,8 @@ function App() {
     <Pressable style={styles.screen} onPress={Keyboard.dismiss}>
       <Header />
       <TaskInput addTask={addTask} />
-      <Filters />
-      <TaskList tasks={tasks} toggleTask={toggleTask} />
+      <Filters activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TaskList tasks={tasks} toggleTask={toggleTask} activeTab={activeTab} />
     </Pressable>
   );
 }

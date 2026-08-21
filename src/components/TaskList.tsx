@@ -7,16 +7,27 @@ type Tasks = {
   date: string;
   isCompleted: boolean;
 };
-
+type TabName = 'All' | 'Pending' | 'Completed';
 type TaskListProps = {
   tasks: Tasks[];
   toggleTask: (id: string) => void;
+  activeTab: TabName;
 };
 
-const TaskList = ({ tasks, toggleTask }: TaskListProps) => {
+const TaskList = ({ tasks, toggleTask, activeTab }: TaskListProps) => {
+  const filteredTasks = tasks.filter(task => {
+    if (activeTab === 'Pending') {
+      return !task.isCompleted;
+    }
+    if (activeTab === 'Completed') {
+      return task.isCompleted;
+    }
+    return true;
+  });
+
   return (
     <>
-      {tasks.map(task => (
+      {filteredTasks.map(task => (
         <View key={task.id} style={styles.taskView}>
           <View style={styles.leftSide}>
             <Pressable
@@ -104,7 +115,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   isCompletedText: {
-    color: 'rgb(245,0,0)',
+    color: '#FF5C00',
   },
   strikeLine: {
     position: 'absolute',
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1.5,
-    backgroundColor: 'rgb(245,0,0)',
+    backgroundColor: '#FF5C00',
     transform: [{ translateY: -0.75 }],
   },
 
