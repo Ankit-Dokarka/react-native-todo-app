@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TodoApp-APK
-          path: android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
+          path: android/app/build/outputs/apk/release/*.apk
