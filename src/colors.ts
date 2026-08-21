@@ -9,8 +9,7 @@ const Colors = {
   todayTagText: "#1976D2",    
   tomorrowTagBg: "#FFF3E0",  
   tomorrowTagText: "#F57C00", 
-  activeTab: "#00C853",        
-  inactiveTab: "#BDBDBD",     
+  activeTab: "#00C853",            
 };
 
 export default Colors;
