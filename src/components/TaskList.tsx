@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, FlatList, StyleSheet, Text, View } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 
 type Tasks = {
@@ -7,7 +7,9 @@ type Tasks = {
   date: string;
   isCompleted: boolean;
 };
+
 type TabName = 'All' | 'Pending' | 'Completed';
+
 type TaskListProps = {
   tasks: Tasks[];
   toggleTask: (id: string) => void;
@@ -16,69 +18,84 @@ type TaskListProps = {
 
 const TaskList = ({ tasks, toggleTask, activeTab }: TaskListProps) => {
   const filteredTasks = tasks.filter(task => {
-    if (activeTab === 'Pending') {
-      return !task.isCompleted;
-    }
-    if (activeTab === 'Completed') {
-      return task.isCompleted;
-    }
+    if (activeTab === 'Pending') return !task.isCompleted;
+    if (activeTab === 'Completed') return task.isCompleted;
     return true;
   });
 
-  return (
-    <>
-      {filteredTasks.map(task => (
-        <View key={task.id} style={styles.taskView}>
-          <View style={styles.leftSide}>
-            <Pressable
-              style={styles.checkbox}
-              onPress={() => toggleTask(task.id)}
+  const renderItem = ({ item }: { item: Tasks }) => (
+    <View style={styles.taskView}>
+      <View style={styles.leftSide}>
+        <Pressable style={styles.checkbox} onPress={() => toggleTask(item.id)}>
+          <MaterialDesignIcons
+            name={
+              item.isCompleted ? 'checkbox-marked' : 'checkbox-blank-outline'
+            }
+            size={40}
+            color="#FF5C00"
+          />
+        </Pressable>
+
+        <View style={styles.taskInfo}>
+          <View style={styles.taskTitleWrapper}>
+            <Text
+              style={[
+                styles.taskTitleBase,
+                item.isCompleted ? styles.isCompletedText : null,
+              ]}
             >
-              <MaterialDesignIcons
-                name={
-                  task.isCompleted
-                    ? 'checkbox-marked'
-                    : 'checkbox-blank-outline'
-                }
-                size={40}
-                color="#FF5C00"
-              />
-            </Pressable>
+              {item.title}
+            </Text>
 
-            <View style={styles.taskInfo}>
-              <View style={styles.taskTitleWrapper}>
-                <Text
-                  style={[
-                    styles.taskTitleBase,
-                    task.isCompleted ? styles.isCompletedText : null,
-                  ]}
-                >
-                  {task.title}
-                </Text>
-
-                {task.isCompleted && <View style={styles.strikeLine} />}
-              </View>
-
-              <Text style={styles.taskDate}>{task.date}</Text>
-            </View>
+            {item.isCompleted && <View style={styles.strikeLine} />}
           </View>
 
-          <Pressable style={styles.menuButton}>
-            <MaterialDesignIcons
-              name="dots-vertical"
-              size={22}
-              color="#71748D"
-            />
-          </Pressable>
+          <Text style={styles.taskDate}>{item.date}</Text>
         </View>
-      ))}
-    </>
+      </View>
+
+      <Pressable style={styles.menuButton}>
+        <MaterialDesignIcons name="dots-vertical" size={22} color="#71748D" />
+      </Pressable>
+    </View>
+  );
+
+  return (
+    <FlatList
+      data={filteredTasks}
+      renderItem={renderItem}
+      keyExtractor={item => item.id}
+      style={styles.listContainer}
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
+      ListEmptyComponent={
+        <View style={styles.emptyView}>
+          <Text style={styles.emptyText}>
+            {activeTab === 'Pending'
+              ? 'No pending tasks'
+              : activeTab === 'Completed'
+              ? 'No completed tasks yet.'
+              : 'No tasks yet. Add one above'}
+          </Text>
+        </View>
+      }
+    />
   );
 };
 
 export default TaskList;
 
 const styles = StyleSheet.create({
+  listContainer: {
+    width: '100%',
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: 20,
+    gap: 12,
+  },
   taskView: {
     width: '100%',
     backgroundColor: '#1E1E1E',
@@ -90,17 +107,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
   leftSide: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
   },
-
   checkbox: {
     marginRight: 12,
   },
-
   taskInfo: {
     justifyContent: 'center',
   },
@@ -108,7 +122,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     alignSelf: 'flex-start',
   },
-
   taskTitleBase: {
     color: '#FFFFFF',
     fontSize: 16,
@@ -126,17 +139,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF5C00',
     transform: [{ translateY: -0.75 }],
   },
-
   taskDate: {
     color: '#71748D',
     fontSize: 13,
     marginTop: 4,
   },
-
   menuButton: {
     width: 36,
     height: 36,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  emptyView: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    color: '#71748D',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
