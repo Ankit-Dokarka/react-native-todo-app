@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import Header from './src/components/Header';
 import TaskInput from './src/components/TaskInput';
 import Filters from './src/components/Filters';
@@ -8,7 +8,6 @@ import uuid from 'react-native-uuid';
 import { createMMKV } from 'react-native-mmkv';
 
 const storage = createMMKV();
-
 const STORAGE_KEY = 'tasks';
 
 type Tasks = {
@@ -23,6 +22,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<'All' | 'Pending' | 'Completed'>(
     'All',
   );
+  const [editingTask, setEditingTask] = useState<Tasks | null>(null);
 
   useEffect(() => {
     const savedTasks = storage.getString(STORAGE_KEY);
@@ -48,6 +48,7 @@ function App() {
       isCompleted: false,
     };
     setTasks([...tasks, newTask]);
+    Keyboard.dismiss();
   };
 
   const toggleTask = (id: string) => {
@@ -64,12 +65,42 @@ function App() {
     });
   };
 
+  const handleEditClick = (task: Tasks) => {
+    setEditingTask(task);
+  };
+
+  const updateTask = (title: string) => {
+    if (!editingTask || title.trim() === '') return;
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === editingTask.id ? { ...task, title: title } : task,
+      ),
+    );
+    setEditingTask(null);
+    Keyboard.dismiss();
+  };
+
+  const cancelEdit = () => {
+    setEditingTask(null);
+    Keyboard.dismiss();
+  };
+
   return (
     <View style={styles.screen}>
       <Header />
-      <TaskInput addTask={addTask} />
+      <TaskInput
+        addTask={addTask}
+        editingTask={editingTask}
+        updateTask={updateTask}
+        cancelEdit={cancelEdit}
+      />
       <Filters activeTab={activeTab} setActiveTab={setActiveTab} />
-      <TaskList tasks={tasks} toggleTask={toggleTask} activeTab={activeTab} />
+      <TaskList
+        tasks={tasks}
+        toggleTask={toggleTask}
+        activeTab={activeTab}
+        onEdit={handleEditClick}
+      />
     </View>
   );
 }

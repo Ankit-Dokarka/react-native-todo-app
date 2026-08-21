@@ -14,9 +14,10 @@ type TaskListProps = {
   tasks: Tasks[];
   toggleTask: (id: string) => void;
   activeTab: TabName;
+  onEdit: (task: Tasks) => void;
 };
 
-const TaskList = ({ tasks, toggleTask, activeTab }: TaskListProps) => {
+const TaskList = ({ tasks, toggleTask, activeTab, onEdit }: TaskListProps) => {
   const filteredTasks = tasks.filter(task => {
     if (activeTab === 'Pending') return !task.isCompleted;
     if (activeTab === 'Completed') return task.isCompleted;
@@ -54,9 +55,24 @@ const TaskList = ({ tasks, toggleTask, activeTab }: TaskListProps) => {
         </View>
       </View>
 
-      <Pressable style={styles.menuButton}>
-        <MaterialDesignIcons name="dots-vertical" size={22} color="#71748D" />
-      </Pressable>
+      <View style={styles.actionsContainer}>
+        {!item.isCompleted && (
+          <Pressable style={styles.actionButton} onPress={() => onEdit(item)}>
+            <MaterialDesignIcons
+              name="pencil-outline"
+              size={20}
+              color="#FFFFFF"
+            />
+          </Pressable>
+        )}
+        <Pressable style={styles.actionButton}>
+          <MaterialDesignIcons
+            name="trash-can-outline"
+            size={20}
+            color="#FF5C00"
+          />
+        </Pressable>
+      </View>
     </View>
   );
 
@@ -144,13 +160,18 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 4,
   },
-  menuButton: {
+  actionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  actionButton: {
     width: 36,
     height: 36,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 4,
   },
-
   emptyView: {
     padding: 20,
     alignItems: 'center',

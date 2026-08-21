@@ -1,55 +1,68 @@
-import {
-  Keyboard,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  TextInputInstance,
-  View,
-} from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, TextInput, Pressable, StyleSheet } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { useState, useEffect, useRef } from 'react';
 
-type TaskInputProps = {
-  addTask: (task: string) => void;
+type Tasks = {
+  id: string;
+  title: string;
+  date: string;
+  isCompleted: boolean;
 };
 
-const TaskInput = ({ addTask }: TaskInputProps) => {
-  const [taskInput, setTaskInput] = useState('');
-  const inputRef = useRef<TextInputInstance>(null);
-  useEffect(() => {
-    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => {
-      inputRef.current?.blur();
-    });
+type TaskInputProps = {
+  addTask: (title: string) => void;
+  editingTask: Tasks | null;
+  updateTask: (title: string) => void;
+  cancelEdit: () => void;
+};
 
-    return () => {
-      keyboardDidHide.remove();
-    };
-  }, []);
+const TaskInput = ({
+  addTask,
+  editingTask,
+  updateTask,
+  cancelEdit,
+}: TaskInputProps) => {
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    if (editingTask) {
+      setText(editingTask.title);
+    } else {
+      setText('');
+    }
+  }, [editingTask]);
+
+  const handlePress = () => {
+    if (text.trim() === '') return;
+    if (editingTask) {
+      updateTask(text);
+    } else {
+      addTask(text);
+    }
+    setText('');
+  };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={styles.container}>
       <TextInput
-        ref={inputRef}
         style={styles.input}
-        placeholder="Add a new task.."
-        placeholderTextColor="#cec7c7"
-        cursorColor="#FF5C00"
-        onChangeText={Text => setTaskInput(Text)}
-        value={taskInput}
+        placeholder={editingTask ? 'Edit your task...' : 'Add a new task...'}
+        placeholderTextColor="#71748D"
+        value={text}
+        onChangeText={setText}
       />
-      <Pressable
-        style={({ pressed }) => [
-          styles.buttonContainer,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={() => {
-          addTask(taskInput);
-          setTaskInput('');
-          Keyboard.dismiss();
-        }}
-      >
-        <MaterialDesignIcons name="plus" size={24} color="#fff" />
+      <Pressable style={styles.actionButton} onPress={handlePress}>
+        <MaterialDesignIcons
+          name={editingTask ? 'check-circle-outline' : 'plus'}
+          size={30}
+          color="#FF5C00"
+        />
       </Pressable>
+      {editingTask && (
+        <Pressable style={styles.cancelButton} onPress={cancelEdit}>
+          <MaterialDesignIcons name="close" size={24} color="#71748D" />
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -57,27 +70,26 @@ const TaskInput = ({ addTask }: TaskInputProps) => {
 export default TaskInput;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    backgroundColor: '#1E1E1E',
-    width: '100%',
-    borderRadius: 14,
-    padding: 15,
+  container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '100%',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333333',
-  },
-  buttonContainer: {
-    backgroundColor: '#FF5C00',
-    padding: 10,
-    borderRadius: 25,
-  },
-  buttonPressed: {
-    opacity: 0.7,
+    gap: 10,
   },
   input: {
-    color: '#fff',
     flex: 1,
+    backgroundColor: '#1E1E1E',
+    borderWidth: 1,
+    borderColor: '#333333',
+    borderRadius: 8,
+    padding: 12,
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  actionButton: {
+    padding: 5,
+  },
+  cancelButton: {
+    padding: 5,
   },
 });
