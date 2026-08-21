@@ -1,4 +1,11 @@
-import { Pressable, FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+} from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 
 type Tasks = {
@@ -15,14 +22,39 @@ type TaskListProps = {
   toggleTask: (id: string) => void;
   activeTab: TabName;
   onEdit: (task: Tasks) => void;
+  deleteTask: (id: string) => void;
 };
 
-const TaskList = ({ tasks, toggleTask, activeTab, onEdit }: TaskListProps) => {
+const TaskList = ({
+  tasks,
+  toggleTask,
+  activeTab,
+  onEdit,
+  deleteTask,
+}: TaskListProps) => {
   const filteredTasks = tasks.filter(task => {
     if (activeTab === 'Pending') return !task.isCompleted;
     if (activeTab === 'Completed') return task.isCompleted;
     return true;
   });
+
+  const handleDelete = (item: Tasks) => {
+    Alert.alert(
+      'Delete Task',
+      `Are you sure you want to delete "${item.title}"?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => deleteTask(item.id),
+        },
+      ],
+    );
+  };
 
   const renderItem = ({ item }: { item: Tasks }) => (
     <View style={styles.taskView}>
@@ -65,7 +97,10 @@ const TaskList = ({ tasks, toggleTask, activeTab, onEdit }: TaskListProps) => {
             />
           </Pressable>
         )}
-        <Pressable style={styles.actionButton}>
+        <Pressable
+          style={styles.actionButton}
+          onPress={() => handleDelete(item)}
+        >
           <MaterialDesignIcons
             name="trash-can-outline"
             size={20}

@@ -85,6 +85,10 @@ function App() {
     Keyboard.dismiss();
   };
 
+  const deleteTask = (id: string) => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+  };
+
   return (
     <View style={styles.screen}>
       <Header />
@@ -100,6 +104,7 @@ function App() {
         toggleTask={toggleTask}
         activeTab={activeTab}
         onEdit={handleEditClick}
+        deleteTask={deleteTask}
       />
     </View>
   );
