@@ -29,13 +29,24 @@ const TaskList = ({ tasks, toggleTask }: TaskListProps) => {
                     ? 'checkbox-marked'
                     : 'checkbox-blank-outline'
                 }
-                size={24}
+                size={40}
                 color="#FF5C00"
               />
             </Pressable>
 
             <View style={styles.taskInfo}>
-              <Text style={styles.taskTitle}>{task.title}</Text>
+              <View style={styles.taskTitleWrapper}>
+                <Text
+                  style={[
+                    styles.taskTitleBase,
+                    task.isCompleted ? styles.isCompletedText : null,
+                  ]}
+                >
+                  {task.title}
+                </Text>
+
+                {task.isCompleted && <View style={styles.strikeLine} />}
+              </View>
 
               <Text style={styles.taskDate}>{task.date}</Text>
             </View>
@@ -82,11 +93,27 @@ const styles = StyleSheet.create({
   taskInfo: {
     justifyContent: 'center',
   },
+  taskTitleWrapper: {
+    position: 'relative',
+    alignSelf: 'flex-start',
+  },
 
-  taskTitle: {
+  taskTitleBase: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  isCompletedText: {
+    color: 'rgb(245,0,0)',
+  },
+  strikeLine: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    height: 1.5,
+    backgroundColor: 'rgb(245,0,0)',
+    transform: [{ translateY: -0.75 }],
   },
 
   taskDate: {
