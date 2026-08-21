@@ -3,8 +3,13 @@ import Header from './src/components/Header';
 import TaskInput from './src/components/TaskInput';
 import Filters from './src/components/Filters';
 import TaskList from './src/components/TaskList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import uuid from 'react-native-uuid';
+import { createMMKV } from 'react-native-mmkv';
+
+const storage = createMMKV();
+
+const STORAGE_KEY = 'tasks';
 
 type Tasks = {
   id: string;
@@ -18,6 +23,17 @@ function App() {
   const [activeTab, setActiveTab] = useState<'All' | 'Pending' | 'Completed'>(
     'All',
   );
+
+  useEffect(() => {
+    const savedTasks = storage.getString(STORAGE_KEY);
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
+
+  useEffect(() => {
+    storage.set(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   const addTask = (title: string) => {
     if (title.trim() === '') return;
