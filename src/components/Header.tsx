@@ -1,16 +1,38 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Alert } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 
-const Header = () => {
+type HeaderProps = {
+  deleteAllTasks: () => void;
+};
+
+const Header = ({ deleteAllTasks }: HeaderProps) => {
+  const handleMenuPress = () => {
+    Alert.alert(
+      'Delete All Tasks',
+      'Are you sure you want to delete all tasks? This cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete All',
+          style: 'destructive',
+          onPress: () => deleteAllTasks(),
+        },
+      ],
+    );
+  };
+
   return (
     <View style={styles.headingContainer}>
       <View>
         <Text style={styles.headingTitle}>Task Manager</Text>
         <Text style={styles.subHeading}>What needs to be done today?</Text>
       </View>
-      <View style={styles.iconContainer}>
+      <Pressable style={styles.iconContainer} onPress={handleMenuPress}>
         <MaterialDesignIcons name="dots-vertical" size={24} color="#ffffff" />
-      </View>
+      </Pressable>
     </View>
   );
 };
@@ -43,5 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 25,
     borderColor: '#333333',
+    borderWidth: 1,
   },
 });

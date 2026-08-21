@@ -89,9 +89,13 @@ function App() {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
   };
 
+  const deleteAllTasks = () => {
+    setTasks([]);
+  };
+
   return (
     <View style={styles.screen}>
-      <Header />
+      <Header deleteAllTasks={deleteAllTasks} />
       <TaskInput
         addTask={addTask}
         editingTask={editingTask}
