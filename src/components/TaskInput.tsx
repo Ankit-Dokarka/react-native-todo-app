@@ -1,6 +1,13 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TextInputInstance,
+  View,
+} from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 type TaskInputProps = {
   addTask: (task: string) => void;
@@ -8,20 +15,37 @@ type TaskInputProps = {
 
 const TaskInput = ({ addTask }: TaskInputProps) => {
   const [taskInput, setTaskInput] = useState('');
+  const inputRef = useRef<TextInputInstance>(null);
+  useEffect(() => {
+    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => {
+      inputRef.current?.blur();
+    });
+
+    return () => {
+      keyboardDidHide.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
+        ref={inputRef}
         style={styles.input}
         placeholder="Add a new task.."
         placeholderTextColor="#cec7c7"
+        cursorColor="#FF5C00"
         onChangeText={Text => setTaskInput(Text)}
         value={taskInput}
       />
       <Pressable
-        style={styles.buttonContainer}
+        style={({ pressed }) => [
+          styles.buttonContainer,
+          pressed && styles.buttonPressed,
+        ]}
         onPress={() => {
           addTask(taskInput);
           setTaskInput('');
+          Keyboard.dismiss();
         }}
       >
         <MaterialDesignIcons name="plus" size={24} color="#fff" />
@@ -49,7 +73,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 25,
   },
+  buttonPressed: {
+    opacity: 0.7,
+  },
   input: {
     color: '#fff',
+    flex: 1,
   },
 });

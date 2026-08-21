@@ -15,7 +15,7 @@ type TaskListProps = {
 
 const TaskList = ({ tasks, toggleTask }: TaskListProps) => {
   return (
-    <View style={styles.taskView}>
+    <>
       {tasks.map(task => (
         <View key={task.id} style={styles.taskView}>
           <View style={styles.leftSide}>
@@ -50,7 +50,7 @@ const TaskList = ({ tasks, toggleTask }: TaskListProps) => {
           </Pressable>
         </View>
       ))}
-    </View>
+    </>
   );
 };
 

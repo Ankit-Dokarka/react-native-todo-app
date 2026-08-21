@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Keyboard, Pressable, StyleSheet } from 'react-native';
 import Header from './src/components/Header';
 import TaskInput from './src/components/TaskInput';
 import Filters from './src/components/Filters';
@@ -46,12 +46,12 @@ function App() {
   };
 
   return (
-    <View style={styles.screen}>
+    <Pressable style={styles.screen} onPress={Keyboard.dismiss}>
       <Header />
       <TaskInput addTask={addTask} />
       <Filters />
       <TaskList tasks={tasks} toggleTask={toggleTask} />
-    </View>
+    </Pressable>
   );
 }
 
