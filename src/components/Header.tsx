@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Pressable, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  StatusBar,
+} from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 
 type HeaderProps = {
@@ -26,12 +33,20 @@ const Header = ({ deleteAllTasks }: HeaderProps) => {
 
   return (
     <View style={styles.headingContainer}>
-      <View>
+      <View style={styles.textContainer}>
         <Text style={styles.headingTitle}>Task Manager</Text>
         <Text style={styles.subHeading}>What needs to be done today?</Text>
       </View>
-      <Pressable style={styles.iconContainer} onPress={handleMenuPress}>
-        <MaterialDesignIcons name="dots-vertical" size={24} color="#ffffff" />
+
+      <Pressable
+        style={({ pressed }) => [
+          styles.iconContainer,
+          pressed && styles.iconPressed,
+        ]}
+        onPress={handleMenuPress}
+        android_ripple={{ color: '#333333', radius: 22, borderless: true }}
+      >
+        <MaterialDesignIcons name="dots-vertical" size={24} color="#A1A1A1" />
       </Pressable>
     </View>
   );
@@ -41,30 +56,40 @@ export default Header;
 
 const styles = StyleSheet.create({
   headingContainer: {
-    paddingTop: 35,
+    paddingTop: (StatusBar.currentHeight || 24) + 10,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingBottom: 10,
+  },
+  textContainer: {
+    flexShrink: 1,
   },
   headingTitle: {
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 32,
+    fontWeight: '800',
     color: '#FFFFFF',
+    letterSpacing: -1,
   },
   subHeading: {
-    color: '#A1A1A1',
-    paddingLeft: 2,
+    color: '#71748D',
     fontSize: 15,
+    marginTop: 4,
+    fontWeight: '500',
   },
   iconContainer: {
-    height: 50,
-    width: 50,
+    height: 44,
+    width: 44,
     backgroundColor: '#1E1E1E',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 22,
     borderColor: '#333333',
     borderWidth: 1,
+  },
+  iconPressed: {
+    backgroundColor: '#333333',
+    transform: [{ scale: 0.95 }],
   },
 });

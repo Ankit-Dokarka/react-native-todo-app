@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Alert,
+  LayoutAnimation,
 } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons/static';
 
@@ -50,22 +51,40 @@ const TaskList = ({
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => deleteTask(item.id),
+          onPress: () => {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
+            deleteTask(item.id);
+          },
         },
       ],
     );
   };
 
+  const handleToggle = (id: string) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    toggleTask(id);
+  };
+
   const renderItem = ({ item }: { item: Tasks }) => (
     <View style={styles.taskView}>
       <View style={styles.leftSide}>
-        <Pressable style={styles.checkbox} onPress={() => toggleTask(item.id)}>
+        <Pressable
+          style={styles.checkbox}
+          onPress={() => handleToggle(item.id)}
+          android_ripple={{
+            color: 'rgba(255, 92, 0, 0.15)',
+            borderless: true,
+            radius: 24,
+          }}
+        >
           <MaterialDesignIcons
             name={
               item.isCompleted ? 'checkbox-marked' : 'checkbox-blank-outline'
             }
-            size={40}
-            color="#FF5C00"
+            size={32}
+            color={item.isCompleted ? '#FF5C00' : '#71748D'}
           />
         </Pressable>
 
@@ -89,17 +108,26 @@ const TaskList = ({
 
       <View style={styles.actionsContainer}>
         {!item.isCompleted && (
-          <Pressable style={styles.actionButton} onPress={() => onEdit(item)}>
+          <Pressable
+            style={styles.actionButton}
+            onPress={() => onEdit(item)}
+            android_ripple={{ color: '#333333', borderless: true, radius: 24 }}
+          >
             <MaterialDesignIcons
               name="pencil-outline"
               size={20}
-              color="#FFFFFF"
+              color="#A1A1A1"
             />
           </Pressable>
         )}
         <Pressable
           style={styles.actionButton}
           onPress={() => handleDelete(item)}
+          android_ripple={{
+            color: 'rgba(255, 92, 0, 0.15)',
+            borderless: true,
+            radius: 24,
+          }}
         >
           <MaterialDesignIcons
             name="trash-can-outline"
@@ -123,6 +151,15 @@ const TaskList = ({
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         <View style={styles.emptyView}>
+          <MaterialDesignIcons
+            name={
+              activeTab === 'Completed'
+                ? 'check-circle-outline'
+                : 'clipboard-list-outline'
+            }
+            size={64}
+            color="#333333"
+          />
           <Text style={styles.emptyText}>
             {activeTab === 'Pending'
               ? 'No pending tasks'
@@ -144,16 +181,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    paddingBottom: 20,
+    paddingVertical: 8,
     gap: 12,
   },
   taskView: {
     width: '100%',
     backgroundColor: '#1E1E1E',
     borderWidth: 1,
-    borderColor: '#333333',
-    borderRadius: 12,
-    padding: 16,
+    borderColor: '#262626',
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -164,10 +202,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   checkbox: {
-    marginRight: 12,
+    height: 44,
+    width: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 22,
+    marginRight: 8,
   },
   taskInfo: {
     justifyContent: 'center',
+    flexShrink: 1,
   },
   taskTitleWrapper: {
     position: 'relative',
@@ -179,7 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   isCompletedText: {
-    color: '#FF5C00',
+    color: '#71748D',
   },
   strikeLine: {
     position: 'absolute',
@@ -201,20 +245,24 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   actionButton: {
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 22,
     marginLeft: 4,
   },
   emptyView: {
-    padding: 20,
+    flex: 1,
+    padding: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 16,
   },
   emptyText: {
     color: '#71748D',
     fontSize: 16,
     textAlign: 'center',
+    fontWeight: '600',
   },
 });

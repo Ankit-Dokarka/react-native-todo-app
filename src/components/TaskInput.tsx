@@ -46,23 +46,42 @@ const TaskInput = ({
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder={editingTask ? 'Edit your task...' : 'Add a new task...'}
+        placeholder={editingTask ? 'Update your task...' : 'Add a new task...'}
         placeholderTextColor="#71748D"
         value={text}
         onChangeText={setText}
+        selectionColor="#FF5C00"
       />
-      <Pressable style={styles.actionButton} onPress={handlePress}>
-        <MaterialDesignIcons
-          name={editingTask ? 'check-circle-outline' : 'plus'}
-          size={30}
-          color="#FF5C00"
-        />
-      </Pressable>
+
       {editingTask && (
-        <Pressable style={styles.cancelButton} onPress={cancelEdit}>
-          <MaterialDesignIcons name="close" size={24} color="#71748D" />
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            styles.cancelButton,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={cancelEdit}
+          android_ripple={{ color: '#333333', radius: 26, borderless: true }}
+        >
+          <MaterialDesignIcons name="close" size={24} color="#A1A1A1" />
         </Pressable>
       )}
+
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          styles.actionButton,
+          pressed && styles.buttonPressed,
+        ]}
+        onPress={handlePress}
+        android_ripple={{ color: '#FFFFFF', radius: 26, borderless: true }}
+      >
+        <MaterialDesignIcons
+          name={editingTask ? 'check' : 'plus'}
+          size={28}
+          color="#FFFFFF"
+        />
+      </Pressable>
     </View>
   );
 };
@@ -74,22 +93,36 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
-    gap: 10,
+    gap: 12,
   },
   input: {
     flex: 1,
     backgroundColor: '#1E1E1E',
     borderWidth: 1,
     borderColor: '#333333',
-    borderRadius: 8,
-    padding: 12,
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  button: {
+    height: 52,
+    width: 52,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 26,
   },
   actionButton: {
-    padding: 5,
+    backgroundColor: '#FF5C00',
   },
   cancelButton: {
-    padding: 5,
+    backgroundColor: '#1E1E1E',
+    borderWidth: 1,
+    borderColor: '#333333',
+  },
+  buttonPressed: {
+    transform: [{ scale: 0.95 }],
   },
 });

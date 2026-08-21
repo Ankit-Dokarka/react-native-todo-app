@@ -1,4 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  LayoutAnimation,
+} from 'react-native';
 
 type TabName = 'All' | 'Pending' | 'Completed';
 
@@ -8,38 +14,34 @@ type FiltersProps = {
 };
 
 const Filters = ({ activeTab, setActiveTab }: FiltersProps) => {
+  const handlePress = (tab: TabName) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setActiveTab(tab);
+  };
+
+  const tabs: TabName[] = ['All', 'Pending', 'Completed'];
+
   return (
     <View style={styles.filterView}>
-      <Pressable
-        style={({ pressed }) => [
-          styles.buttonBase,
-          activeTab === 'All' ? styles.buttonActive : null,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={() => setActiveTab('All')}
-      >
-        <Text style={styles.text}>All</Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [
-          styles.buttonBase,
-          activeTab === 'Pending' ? styles.buttonActive : null,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={() => setActiveTab('Pending')}
-      >
-        <Text style={styles.text}>Pending</Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [
-          styles.buttonBase,
-          activeTab === 'Completed' ? styles.buttonActive : null,
-          pressed && styles.buttonPressed,
-        ]}
-        onPress={() => setActiveTab('Completed')}
-      >
-        <Text style={styles.text}>Completed</Text>
-      </Pressable>
+      {tabs.map(tab => (
+        <Pressable
+          key={tab}
+          style={({ pressed }) => [
+            styles.buttonBase,
+            activeTab === tab && styles.buttonActive,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={() => handlePress(tab)}
+          android_ripple={{
+            color: 'rgba(255, 255, 255, 0.1)',
+            borderless: true,
+          }}
+        >
+          <Text style={[styles.text, activeTab === tab && styles.textActive]}>
+            {tab}
+          </Text>
+        </Pressable>
+      ))}
     </View>
   );
 };
@@ -48,23 +50,31 @@ export default Filters;
 
 const styles = StyleSheet.create({
   filterView: {
-    width: '70%',
     flexDirection: 'row',
-    gap: 16,
-    alignSelf: 'flex-start',
-  },
-  text: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    width: '100%',
+    backgroundColor: '#1E1E1E',
+    borderRadius: 16,
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#262626',
   },
   buttonBase: {
-    padding: 15,
-    borderRadius: 8,
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
   },
-  buttonActive: {
-    backgroundColor: '#FF5C00',
-  },
+  buttonActive: {},
   buttonPressed: {
-    opacity: 0.7,
+    opacity: 0.8,
+  },
+  text: {
+    color: '#A1A1A1',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  textActive: {
+    color: '#FF5C00',
   },
 });
