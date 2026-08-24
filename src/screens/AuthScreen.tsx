@@ -2,11 +2,56 @@ import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+type AuthErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+
 export const AuthScreen = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errors, setErrors] = useState<AuthErrors>({});
+
   const navigation = useNavigation();
 
-  const toggleAuthMode = () => setIsLogin(prev => !prev);
+  const validateForm = (): AuthErrors => {
+    const tempErrors: AuthErrors = {};
+
+    if (email.trim() === '') {
+      tempErrors.email = 'Email is required';
+    } else if (!email.trim().includes('@')) {
+      tempErrors.email = 'Enter a valid email';
+    }
+
+    if (!isLogin && name.trim().length < 3) {
+      tempErrors.name = 'Name must be at least 3 characters';
+    }
+
+    if (password.length < 6) {
+      tempErrors.password = 'Password must be at least 6 characters';
+    }
+
+    return tempErrors;
+  };
+
+  const handleForm = () => {
+    const foundErrors = validateForm();
+
+    if (Object.keys(foundErrors).length === 0) {
+      setErrors({});
+      navigation.navigate('DashBoard');
+    } else {
+      setErrors(foundErrors);
+    }
+  };
+
+  const toggleAuthMode = () => {
+    setIsLogin(prev => !prev);
+    setErrors({});
+  };
 
   const titleText = isLogin ? 'Login' : 'Signup';
   const buttonText = isLogin ? 'Login' : 'Signup';
@@ -24,7 +69,12 @@ export const AuthScreen = () => {
               cursorColor="#FF5C00"
               placeholder="Jon Dow"
               placeholderTextColor="#666666"
+              value={name}
+              onChangeText={setName}
             />
+            {errors.name ? (
+              <Text style={styles.errorText}>{errors.name}</Text>
+            ) : null}
           </>
         )}
 
@@ -34,7 +84,12 @@ export const AuthScreen = () => {
           cursorColor="#FF5C00"
           placeholder="example@email.com"
           placeholderTextColor="#666666"
+          value={email}
+          onChangeText={setEmail}
         />
+        {errors.email ? (
+          <Text style={styles.errorText}>{errors.email}</Text>
+        ) : null}
 
         <Text style={styles.labelText}>Password</Text>
         <TextInput
@@ -43,7 +98,12 @@ export const AuthScreen = () => {
           secureTextEntry
           placeholder="••••••••"
           placeholderTextColor="#666666"
+          value={password}
+          onChangeText={setPassword}
         />
+        {errors.password ? (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        ) : null}
       </View>
 
       <Pressable
@@ -51,7 +111,7 @@ export const AuthScreen = () => {
           styles.authButton,
           pressed && styles.buttonPressed,
         ]}
-        onPress={() => navigation.navigate('DashBoard')}
+        onPress={handleForm}
       >
         <Text style={styles.authButtonText}>{buttonText}</Text>
       </Pressable>
@@ -103,6 +163,13 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 16,
     height: 60,
+  },
+  errorText: {
+    color: '#FF4D4D',
+    fontSize: 12,
+    fontWeight: '600',
+    marginLeft: 4,
+    marginTop: 2,
   },
   buttonPressed: {
     opacity: 0.8,
