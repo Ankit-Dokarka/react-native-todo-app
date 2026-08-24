@@ -9,10 +9,10 @@ type AuthErrors = {
 };
 
 export const AuthScreen = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<AuthErrors>({});
 
   const navigation = useNavigation();
