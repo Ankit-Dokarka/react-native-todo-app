@@ -3,14 +3,32 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export const AuthScreen = () => {
-  const [authToggle, setAuthToggle] = useState('login');
+  const [isLogin, setIsLogin] = useState(true);
   const navigation = useNavigation();
+
+  const toggleAuthMode = () => setIsLogin(prev => !prev);
+
+  const titleText = isLogin ? 'Login' : 'Signup';
+  const buttonText = isLogin ? 'Login' : 'Signup';
+
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>{titleText}</Text>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.lableText}>Email</Text>
+        {!isLogin && (
+          <>
+            <Text style={styles.labelText}>Name</Text>
+            <TextInput
+              style={styles.input}
+              cursorColor="#FF5C00"
+              placeholder="Jon Dow"
+              placeholderTextColor="#666666"
+            />
+          </>
+        )}
+
+        <Text style={styles.labelText}>Email</Text>
         <TextInput
           style={styles.input}
           cursorColor="#FF5C00"
@@ -18,7 +36,7 @@ export const AuthScreen = () => {
           placeholderTextColor="#666666"
         />
 
-        <Text style={styles.lableText}>Password</Text>
+        <Text style={styles.labelText}>Password</Text>
         <TextInput
           style={styles.input}
           cursorColor="#FF5C00"
@@ -30,21 +48,20 @@ export const AuthScreen = () => {
 
       <Pressable
         style={({ pressed }) => [
-          styles.loginButton,
+          styles.authButton,
           pressed && styles.buttonPressed,
         ]}
         onPress={() => navigation.navigate('DashBoard')}
       >
-        <Text style={styles.loginButtonText}>Login</Text>
+        <Text style={styles.authButtonText}>{buttonText}</Text>
       </Pressable>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.registerButton,
-          pressed && styles.buttonPressed,
-        ]}
-      >
-        <Text style={styles.registerButtonText}>Register</Text>
+      <Pressable onPress={toggleAuthMode}>
+        <Text style={styles.toggleText}>
+          {isLogin
+            ? "Don't have an account? Signup"
+            : 'Already have an account? Login'}
+        </Text>
       </Pressable>
     </View>
   );
@@ -66,7 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  lableText: {
+  labelText: {
     color: '#AAAAAA',
     fontSize: 14,
     fontWeight: '600',
@@ -90,30 +107,21 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.8,
   },
-  loginButton: {
+  authButton: {
     backgroundColor: '#FF5C00',
     borderRadius: 10,
     width: '100%',
     padding: 18,
     alignItems: 'center',
   },
-  loginButtonText: {
+  authButtonText: {
     color: '#FFFFFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  registerButton: {
-    backgroundColor: '#262626',
-    borderRadius: 10,
-    width: '100%',
-    padding: 18,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#333333',
-  },
-  registerButtonText: {
+  toggleText: {
     color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
