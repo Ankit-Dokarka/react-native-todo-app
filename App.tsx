@@ -1,22 +1,7 @@
-import { StyleSheet, View } from 'react-native';
-import { AuthScreen } from './src/screens/AuthScreen';
+import { Navigation } from './src/navigation/authStack';
 
 function App() {
-  return (
-    <View style={styles.screen}>
-      <AuthScreen />
-    </View>
-  );
+  return <Navigation />;
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#0F0F0F',
-    padding: 15,
-    alignItems: 'center',
-    gap: 15,
-  },
-});

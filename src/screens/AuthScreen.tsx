@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export const AuthScreen = () => {
   const [authToggle, setAuthToggle] = useState('login');
-
+  const navigation = useNavigation();
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Login</Text>
@@ -32,6 +33,7 @@ export const AuthScreen = () => {
           styles.loginButton,
           pressed && styles.buttonPressed,
         ]}
+        onPress={() => navigation.navigate('DashBoard')}
       >
         <Text style={styles.loginButtonText}>Login</Text>
       </Pressable>
