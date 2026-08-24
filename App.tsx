@@ -1,101 +1,105 @@
-import { StyleSheet, View, Keyboard } from 'react-native';
-import Header from './src/components/Header';
-import TaskInput from './src/components/TaskInput';
-import Filters from './src/components/Filters';
-import TaskList from './src/components/TaskList';
-import { useEffect, useState } from 'react';
-import uuid from 'react-native-uuid';
-import { createMMKV } from 'react-native-mmkv';
+// import { StyleSheet, View, Keyboard } from 'react-native';
+// import Header from './src/components/Header';
+// import TaskInput from './src/components/TaskInput';
+// import Filters from './src/components/Filters';
+// import TaskList from './src/components/TaskList';
+// import { useEffect, useState } from 'react';
+// import uuid from 'react-native-uuid';
+// import { createMMKV } from 'react-native-mmkv';
 
-const storage = createMMKV();
-const STORAGE_KEY = 'tasks';
+import { StyleSheet, View } from 'react-native';
+import { AuthScreen } from './src/screens/AuthScreen';
 
-type Tasks = {
-  id: string;
-  title: string;
-  date: string;
-  isCompleted: boolean;
-};
+// const storage = createMMKV();
+// const STORAGE_KEY = 'tasks';
+
+// type Tasks = {
+//   id: string;
+//   title: string;
+//   date: string;
+//   isCompleted: boolean;
+// };
 
 function App() {
-  const [tasks, setTasks] = useState<Tasks[]>([]);
-  const [activeTab, setActiveTab] = useState<'All' | 'Pending' | 'Completed'>(
-    'All',
-  );
-  const [editingTask, setEditingTask] = useState<Tasks | null>(null);
+  // const [tasks, setTasks] = useState<Tasks[]>([]);
+  // const [activeTab, setActiveTab] = useState<'All' | 'Pending' | 'Completed'>(
+  //   'All',
+  // );
+  // const [editingTask, setEditingTask] = useState<Tasks | null>(null);
 
-  useEffect(() => {
-    const savedTasks = storage.getString(STORAGE_KEY);
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedTasks = storage.getString(STORAGE_KEY);
+  //   if (savedTasks) {
+  //     setTasks(JSON.parse(savedTasks));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    storage.set(STORAGE_KEY, JSON.stringify(tasks));
-  }, [tasks]);
+  // useEffect(() => {
+  //   storage.set(STORAGE_KEY, JSON.stringify(tasks));
+  // }, [tasks]);
 
-  const addTask = (title: string) => {
-    if (title.trim() === '') return;
-    const newTask = {
-      id: uuid.v4() as string,
-      title: title,
-      date: new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      }),
-      isCompleted: false,
-    };
-    setTasks([...tasks, newTask]);
-    Keyboard.dismiss();
-  };
+  // const addTask = (title: string) => {
+  //   if (title.trim() === '') return;
+  //   const newTask = {
+  //     id: uuid.v4() as string,
+  //     title: title,
+  //     date: new Date().toLocaleDateString('en-GB', {
+  //       day: '2-digit',
+  //       month: 'short',
+  //       year: 'numeric',
+  //     }),
+  //     isCompleted: false,
+  //   };
+  //   setTasks([...tasks, newTask]);
+  //   Keyboard.dismiss();
+  // };
 
-  const toggleTask = (id: string) => {
-    setTasks(prevTasks => {
-      return prevTasks.map(task => {
-        if (task.id === id) {
-          return {
-            ...task,
-            isCompleted: !task.isCompleted,
-          };
-        }
-        return task;
-      });
-    });
-  };
+  // const toggleTask = (id: string) => {
+  //   setTasks(prevTasks => {
+  //     return prevTasks.map(task => {
+  //       if (task.id === id) {
+  //         return {
+  //           ...task,
+  //           isCompleted: !task.isCompleted,
+  //         };
+  //       }
+  //       return task;
+  //     });
+  //   });
+  // };
 
-  const handleEditClick = (task: Tasks) => {
-    setEditingTask(task);
-  };
+  // const handleEditClick = (task: Tasks) => {
+  //   setEditingTask(task);
+  // };
 
-  const updateTask = (title: string) => {
-    if (!editingTask || title.trim() === '') return;
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === editingTask.id ? { ...task, title: title } : task,
-      ),
-    );
-    setEditingTask(null);
-    Keyboard.dismiss();
-  };
+  // const updateTask = (title: string) => {
+  //   if (!editingTask || title.trim() === '') return;
+  //   setTasks(prevTasks =>
+  //     prevTasks.map(task =>
+  //       task.id === editingTask.id ? { ...task, title: title } : task,
+  //     ),
+  //   );
+  //   setEditingTask(null);
+  //   Keyboard.dismiss();
+  // };
 
-  const cancelEdit = () => {
-    setEditingTask(null);
-    Keyboard.dismiss();
-  };
+  // const cancelEdit = () => {
+  //   setEditingTask(null);
+  //   Keyboard.dismiss();
+  // };
 
-  const deleteTask = (id: string) => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
-  };
+  // const deleteTask = (id: string) => {
+  //   setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+  // };
 
-  const deleteAllTasks = () => {
-    setTasks([]);
-  };
+  // const deleteAllTasks = () => {
+  //   setTasks([]);
+  // };
 
   return (
     <View style={styles.screen}>
-      <Header deleteAllTasks={deleteAllTasks} />
+      <AuthScreen />
+      {/* <Header deleteAllTasks={deleteAllTasks} />
       <TaskInput
         addTask={addTask}
         editingTask={editingTask}
@@ -109,7 +113,7 @@ function App() {
         activeTab={activeTab}
         onEdit={handleEditClick}
         deleteTask={deleteTask}
-      />
+      /> */}
     </View>
   );
 }
