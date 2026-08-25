@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import useAuth from '../context/AuthContext';
 
@@ -92,7 +94,10 @@ export const AuthScreen = () => {
   const buttonText = isLogin ? 'Login' : 'Signup';
 
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+      style={styles.screen}
+    >
       <Text style={styles.title}>{titleText}</Text>
 
       <View style={styles.inputContainer}>
@@ -171,7 +176,7 @@ export const AuthScreen = () => {
             : 'Already have an account? Login'}
         </Text>
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
