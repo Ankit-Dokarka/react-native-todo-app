@@ -1,11 +1,32 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { createMMKV } from 'react-native-mmkv';
+
+const storage = createMMKV();
+
+const STORAGE_KEY = 'userData';
 
 type AuthErrors = {
   name?: string;
   email?: string;
   password?: string;
+  error?: string;
+};
+
+type User = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+type UsersStore = {
+  [email: string]: User;
+};
+
+const getUsers = (): UsersStore => {
+  const json = storage.getString(STORAGE_KEY);
+  return json ? JSON.parse(json) : {};
 };
 
 export const AuthScreen = () => {
@@ -42,9 +63,35 @@ export const AuthScreen = () => {
 
     if (Object.keys(foundErrors).length === 0) {
       setErrors({});
-      navigation.navigate('DashBoard');
     } else {
       setErrors(foundErrors);
+      return;
+    }
+
+    if (isLogin) {
+      const users = getUsers();
+      if (!users[email]) {
+        setErrors({ error: 'Please Register' });
+      } else {
+        if (users[email].password === password) {
+          navigation.navigate('DashBoard');
+        } else {
+          setErrors({ error: 'Invalid Credentials' });
+        }
+      }
+    } else {
+      const users = getUsers();
+      if (!users[email]) {
+        users[email] = {
+          name,
+          email,
+          password,
+        };
+        storage.set(STORAGE_KEY, JSON.stringify(users));
+        navigation.navigate('DashBoard');
+      } else {
+        setErrors({ error: 'This email is already used' });
+      }
     }
   };
 
@@ -103,6 +150,10 @@ export const AuthScreen = () => {
         />
         {errors.password ? (
           <Text style={styles.errorText}>{errors.password}</Text>
+        ) : null}
+
+        {errors.error ? (
+          <Text style={styles.errorText}>{errors.error}</Text>
         ) : null}
       </View>
 
