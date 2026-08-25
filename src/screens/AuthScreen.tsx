@@ -70,6 +70,9 @@ export const AuthScreen = () => {
   const toggleAuthMode = () => {
     setIsLogin(prev => !prev);
     setErrors({});
+    setName('');
+    setEmail('');
+    setPassword('');
   };
 
   const titleText = isLogin ? 'Login' : 'Signup';
