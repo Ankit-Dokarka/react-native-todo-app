@@ -1,6 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import useAuth from '../context/AuthContext';
 
 type AuthErrors = {
@@ -16,6 +23,7 @@ export const AuthScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<AuthErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
   const { login, register } = useAuth();
@@ -40,7 +48,7 @@ export const AuthScreen = () => {
     return tempErrors;
   };
 
-  const handleForm = () => {
+  const handleForm = async () => {
     const foundErrors = validateForm();
 
     if (Object.keys(foundErrors).length > 0) {
@@ -49,30 +57,35 @@ export const AuthScreen = () => {
     }
 
     setErrors({});
+    setIsLoading(true);
 
-    if (isLogin) {
-      const result = login(email, password);
-      if (!result.success) {
-        setErrors({ error: result.error });
+    try {
+      if (isLogin) {
+        const result = await login(email, password);
+        if (!result.success) {
+          setErrors({ error: result.error });
+        } else {
+          navigation.navigate('DashBoard');
+        }
       } else {
-        navigation.navigate('DashBoard');
+        const result = await register(name, email, password);
+        if (!result.success) {
+          setErrors({ error: result.error });
+        } else {
+          navigation.navigate('DashBoard');
+        }
       }
-    } else {
-      const result = register(name, email, password);
-      if (!result.success) {
-        setErrors({ error: result.error });
-      } else {
-        navigation.navigate('DashBoard');
-      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const toggleAuthMode = () => {
     setIsLogin(prev => !prev);
-    setErrors({});
     setName('');
     setEmail('');
     setPassword('');
+    setErrors({});
   };
 
   const titleText = isLogin ? 'Login' : 'Signup';
@@ -93,6 +106,7 @@ export const AuthScreen = () => {
               placeholderTextColor="#666666"
               value={name}
               onChangeText={setName}
+              editable={!isLoading}
             />
             {errors.name ? (
               <Text style={styles.errorText}>{errors.name}</Text>
@@ -108,6 +122,7 @@ export const AuthScreen = () => {
           placeholderTextColor="#666666"
           value={email}
           onChangeText={setEmail}
+          editable={!isLoading}
         />
         {errors.email ? (
           <Text style={styles.errorText}>{errors.email}</Text>
@@ -122,6 +137,7 @@ export const AuthScreen = () => {
           placeholderTextColor="#666666"
           value={password}
           onChangeText={setPassword}
+          editable={!isLoading}
         />
         {errors.password ? (
           <Text style={styles.errorText}>{errors.password}</Text>
@@ -136,14 +152,20 @@ export const AuthScreen = () => {
         style={({ pressed }) => [
           styles.authButton,
           pressed && styles.buttonPressed,
+          isLoading && styles.buttonDisabled,
         ]}
         onPress={handleForm}
+        disabled={isLoading}
       >
-        <Text style={styles.authButtonText}>{buttonText}</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color="#FFFFFF" />
+        ) : (
+          <Text style={styles.authButtonText}>{buttonText}</Text>
+        )}
       </Pressable>
 
-      <Pressable onPress={toggleAuthMode}>
-        <Text style={styles.toggleText}>
+      <Pressable onPress={toggleAuthMode} disabled={isLoading}>
+        <Text style={[styles.toggleText, isLoading && styles.textDisabled]}>
           {isLogin
             ? "Don't have an account? Signup"
             : 'Already have an account? Login'}
@@ -210,12 +232,21 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.8,
   },
+  buttonDisabled: {
+    backgroundColor: '#993D00',
+    opacity: 0.7,
+  },
+  textDisabled: {
+    opacity: 0.5,
+  },
   authButton: {
     backgroundColor: '#FF5C00',
     borderRadius: 10,
     width: '100%',
     padding: 18,
     alignItems: 'center',
+    height: 60,
+    justifyContent: 'center',
   },
   authButtonText: {
     color: '#FFFFFF',

@@ -13,8 +13,8 @@ type AuthResult = {
 
 type AuthContextType = {
     user: User | null;
-    login: (email: string, password: string) => AuthResult;
-    register: (name: string, email: string, password: string) => AuthResult;
+    login: (email: string, password: string) => Promise<AuthResult>;
+    register: (name: string, email: string, password: string) => Promise<AuthResult>;
     logout: () => void;
 }
 

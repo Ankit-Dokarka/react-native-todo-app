@@ -30,7 +30,12 @@ const getUsers = (): UsersStore => {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (email: string, password: string): AuthResult => {
+  const login = async (
+    email: string,
+    password: string,
+  ): Promise<AuthResult> => {
+    await new Promise<void>(resolve => setTimeout(resolve, 1500));
+
     const users = getUsers();
     if (!users[email]) {
       return { success: false, error: 'Please Register' };
@@ -42,11 +47,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return { success: false, error: 'Invalid Credentials' };
   };
 
-  const register = (
+  const register = async (
     name: string,
     email: string,
     password: string,
-  ): AuthResult => {
+  ): Promise<AuthResult> => {
+    await new Promise<void>(resolve => setTimeout(resolve, 1500));
+
     const users = getUsers();
     if (users[email]) {
       return { success: false, error: 'This email is already used' };
