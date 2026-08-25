@@ -65,7 +65,7 @@ export const AuthScreen = () => {
           <>
             <Text style={styles.labelText}>Name</Text>
             <TextInput
-              style={styles.input}
+              style={[errors.name ? styles.inputError : styles.inputBase]}
               cursorColor="#FF5C00"
               placeholder="Jon Dow"
               placeholderTextColor="#666666"
@@ -80,7 +80,7 @@ export const AuthScreen = () => {
 
         <Text style={styles.labelText}>Email</Text>
         <TextInput
-          style={styles.input}
+          style={[errors.email ? styles.inputError : styles.inputBase]}
           cursorColor="#FF5C00"
           placeholder="example@email.com"
           placeholderTextColor="#666666"
@@ -93,7 +93,7 @@ export const AuthScreen = () => {
 
         <Text style={styles.labelText}>Password</Text>
         <TextInput
-          style={styles.input}
+          style={[errors.password ? styles.inputError : styles.inputBase]}
           cursorColor="#FF5C00"
           secureTextEntry
           placeholder="••••••••"
@@ -154,9 +154,19 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 12,
   },
-  input: {
+  inputBase: {
     borderWidth: 1,
     borderColor: '#333333',
+    borderRadius: 10,
+    backgroundColor: '#1A1A1A',
+    color: '#FFFFFF',
+    padding: 16,
+    fontSize: 16,
+    height: 60,
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: 'red',
     borderRadius: 10,
     backgroundColor: '#1A1A1A',
     color: '#FFFFFF',
