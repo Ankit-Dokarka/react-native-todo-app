@@ -1,32 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { createMMKV } from 'react-native-mmkv';
-
-const storage = createMMKV();
-
-const STORAGE_KEY = 'userData';
+import useAuth from '../context/AuthContext';
 
 type AuthErrors = {
   name?: string;
   email?: string;
   password?: string;
   error?: string;
-};
-
-type User = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-type UsersStore = {
-  [email: string]: User;
-};
-
-const getUsers = (): UsersStore => {
-  const json = storage.getString(STORAGE_KEY);
-  return json ? JSON.parse(json) : {};
 };
 
 export const AuthScreen = () => {
@@ -37,6 +18,7 @@ export const AuthScreen = () => {
   const [errors, setErrors] = useState<AuthErrors>({});
 
   const navigation = useNavigation();
+  const { login, register } = useAuth();
 
   const validateForm = (): AuthErrors => {
     const tempErrors: AuthErrors = {};
@@ -61,36 +43,26 @@ export const AuthScreen = () => {
   const handleForm = () => {
     const foundErrors = validateForm();
 
-    if (Object.keys(foundErrors).length === 0) {
-      setErrors({});
-    } else {
+    if (Object.keys(foundErrors).length > 0) {
       setErrors(foundErrors);
       return;
     }
 
+    setErrors({});
+
     if (isLogin) {
-      const users = getUsers();
-      if (!users[email]) {
-        setErrors({ error: 'Please Register' });
+      const result = login(email, password);
+      if (!result.success) {
+        setErrors({ error: result.error });
       } else {
-        if (users[email].password === password) {
-          navigation.navigate('DashBoard');
-        } else {
-          setErrors({ error: 'Invalid Credentials' });
-        }
+        navigation.navigate('DashBoard');
       }
     } else {
-      const users = getUsers();
-      if (!users[email]) {
-        users[email] = {
-          name,
-          email,
-          password,
-        };
-        storage.set(STORAGE_KEY, JSON.stringify(users));
-        navigation.navigate('DashBoard');
+      const result = register(name, email, password);
+      if (!result.success) {
+        setErrors({ error: result.error });
       } else {
-        setErrors({ error: 'This email is already used' });
+        navigation.navigate('DashBoard');
       }
     }
   };
