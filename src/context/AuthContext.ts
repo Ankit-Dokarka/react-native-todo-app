@@ -16,6 +16,7 @@ type AuthContextType = {
     login: (email: string, password: string) => Promise<AuthResult>;
     register: (name: string, email: string, password: string) => Promise<AuthResult>;
     logout: () => void;
+    isLoggedIn : boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)

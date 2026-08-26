@@ -1,5 +1,9 @@
+import useAuth from './src/context/AuthContext';
 import { AuthProvider } from './src/context/AuthProvider';
-import { Navigation } from './src/navigation/authStack';
+import {
+  AuthNavigation,
+  DashBoardNavigation,
+} from './src/navigation/navigationStack';
 
 function App() {
   return (
@@ -7,6 +11,12 @@ function App() {
       <Navigation />
     </AuthProvider>
   );
+}
+
+function Navigation() {
+  const { isLoggedIn } = useAuth();
+
+  return isLoggedIn ? <DashBoardNavigation /> : <AuthNavigation />;
 }
 
 export default App;

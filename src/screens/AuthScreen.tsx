@@ -66,15 +66,11 @@ export const AuthScreen = () => {
         const result = await login(email, password);
         if (!result.success) {
           setErrors({ error: result.error });
-        } else {
-          navigation.navigate('DashBoard');
         }
       } else {
         const result = await register(name, email, password);
         if (!result.success) {
           setErrors({ error: result.error });
-        } else {
-          navigation.navigate('DashBoard');
         }
       }
     } finally {
