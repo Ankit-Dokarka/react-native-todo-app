@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DashBoard } from "../screens/Dashboard";
 import { AuthScreen } from "../screens/AuthScreen";
 import { createStaticNavigation } from "@react-navigation/native";
+import { ProfileScreen } from "../screens/ProfileScreen";
 
 
 const authStack = createNativeStackNavigator({
@@ -21,7 +22,14 @@ const dashBoardStack = createNativeStackNavigator({
       options: {
         headerShown: false,
       },
+      
     },
+    Profile:{
+        screen: ProfileScreen,
+        options:{
+          headerShown: false
+        }
+      }
   }
 })
 
