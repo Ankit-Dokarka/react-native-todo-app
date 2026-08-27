@@ -36,12 +36,12 @@ const Header = ({ deleteAllTasks }: HeaderProps) => {
           ]}
           onPress={() => setMenuVisible(prev => !prev)}
           android_ripple={{
-            color: '#333333',
+            color: 'rgba(43, 45, 38, 0.1)',
             radius: 22,
             borderless: true,
           }}
         >
-          <MaterialDesignIcons name="dots-vertical" size={24} color="#A1A1A1" />
+          <MaterialDesignIcons name="dots-vertical" size={24} color="#5E6250" />
         </Pressable>
 
         {menuVisible && (
@@ -50,14 +50,14 @@ const Header = ({ deleteAllTasks }: HeaderProps) => {
               <MaterialDesignIcons
                 name="delete-outline"
                 size={20}
-                color="#FF5C00"
+                color="#A83232"
               />
 
               <Text style={styles.menuText}>Delete All Tasks</Text>
             </Pressable>
 
             <Pressable style={styles.menuItem} onPress={handleLogout}>
-              <MaterialDesignIcons name="logout" size={20} color="#FF5C00" />
+              <MaterialDesignIcons name="logout" size={20} color="#A83232" />
 
               <Text style={styles.menuText}>Logout</Text>
             </Pressable>
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
   headingTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#2B2D26',
     letterSpacing: -1,
   },
 
   subHeading: {
-    color: '#71748D',
+    color: '#5E6250',
     fontSize: 15,
     marginTop: 4,
     fontWeight: '500',
@@ -101,16 +101,16 @@ const styles = StyleSheet.create({
   iconContainer: {
     height: 44,
     width: 44,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F4F2E9',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 22,
-    borderColor: '#333333',
+    borderColor: '#A3A786',
     borderWidth: 1,
   },
 
   iconPressed: {
-    backgroundColor: '#333333',
+    backgroundColor: '#D8DBC2',
     transform: [{ scale: 0.95 }],
   },
 
@@ -119,10 +119,10 @@ const styles = StyleSheet.create({
     top: 52,
     right: 0,
     width: 190,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F4F2E9',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#333333',
+    borderColor: '#A3A786',
     paddingVertical: 6,
     zIndex: 100,
     elevation: 8,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
 
   menuText: {
-    color: '#FFFFFF',
+    color: '#2B2D26',
     fontSize: 14,
     fontWeight: '600',
   },

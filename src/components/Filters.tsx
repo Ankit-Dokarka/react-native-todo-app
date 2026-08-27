@@ -33,7 +33,7 @@ const Filters = ({ activeTab, setActiveTab }: FiltersProps) => {
           ]}
           onPress={() => handlePress(tab)}
           android_ripple={{
-            color: 'rgba(255, 255, 255, 0.1)',
+            color: 'rgba(43, 45, 38, 0.05)',
             borderless: true,
           }}
         >
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
   filterView: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#D8DBC2',
     borderRadius: 16,
     padding: 6,
     borderWidth: 1,
-    borderColor: '#262626',
+    borderColor: '#A3A786',
   },
   buttonBase: {
     flex: 1,
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   text: {
-    color: '#A1A1A1',
+    color: '#5E6250',
     fontWeight: '700',
     fontSize: 14,
   },
   textActive: {
-    color: '#FF5C00',
+    color: '#B0522E',
   },
 });

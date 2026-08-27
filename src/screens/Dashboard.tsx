@@ -117,7 +117,7 @@ export const DashBoard = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#C7CBAC',
     padding: 15,
     alignItems: 'center',
     gap: 15,

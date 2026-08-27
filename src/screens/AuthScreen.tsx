@@ -102,9 +102,9 @@ export const AuthScreen = () => {
             <Text style={styles.labelText}>Name</Text>
             <TextInput
               style={[errors.name ? styles.inputError : styles.inputBase]}
-              cursorColor="#FF5C00"
+              cursorColor="#B0522E"
               placeholder="Jon Dow"
-              placeholderTextColor="#666666"
+              placeholderTextColor="#5E6250"
               value={name}
               onChangeText={setName}
               editable={!isLoading}
@@ -159,7 +159,7 @@ export const AuthScreen = () => {
         disabled={isLoading}
       >
         {isLoading ? (
-          <ActivityIndicator size="small" color="#FFFFFF" />
+          <ActivityIndicator size="small" color="#F4F2E9" />
         ) : (
           <Text style={styles.authButtonText}>{buttonText}</Text>
         )}
@@ -179,7 +179,7 @@ export const AuthScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#0F0F0F',
+    backgroundColor: '#C7CBAC',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -188,12 +188,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 40,
-    color: '#FF5C00',
+    color: '#B0522E',
     fontWeight: 'bold',
     marginBottom: 10,
   },
   labelText: {
-    color: '#AAAAAA',
+    color: '#5E6250',
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 4,
@@ -205,26 +205,26 @@ const styles = StyleSheet.create({
   },
   inputBase: {
     borderWidth: 1,
-    borderColor: '#333333',
+    borderColor: '#F4F2E9',
     borderRadius: 10,
-    backgroundColor: '#1A1A1A',
-    color: '#FFFFFF',
+    backgroundColor: '#A3A786',
+    color: '#2B2D26',
     padding: 16,
     fontSize: 16,
     height: 60,
   },
   inputError: {
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: '#A83232',
     borderRadius: 10,
-    backgroundColor: '#1A1A1A',
-    color: '#FFFFFF',
+    backgroundColor: '#F4F2E9',
+    color: '#2B2D26',
     padding: 16,
     fontSize: 16,
     height: 60,
   },
   errorText: {
-    color: '#FF4D4D',
+    color: '#A83232',
     fontSize: 12,
     fontWeight: '600',
     marginLeft: 4,
@@ -234,14 +234,14 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   buttonDisabled: {
-    backgroundColor: '#993D00',
+    backgroundColor: '#8C3F22',
     opacity: 0.7,
   },
   textDisabled: {
     opacity: 0.5,
   },
   authButton: {
-    backgroundColor: '#FF5C00',
+    backgroundColor: '#B0522E',
     borderRadius: 10,
     width: '100%',
     padding: 18,
@@ -250,12 +250,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   authButtonText: {
-    color: '#FFFFFF',
+    color: '#F4F2E9',
     fontSize: 18,
     fontWeight: 'bold',
   },
   toggleText: {
-    color: '#FFFFFF',
+    color: '#2B2D26',
     fontSize: 16,
     fontWeight: '600',
   },

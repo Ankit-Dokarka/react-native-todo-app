@@ -74,7 +74,7 @@ const TaskList = ({
           style={styles.checkbox}
           onPress={() => handleToggle(item.id)}
           android_ripple={{
-            color: 'rgba(255, 92, 0, 0.15)',
+            color: 'rgba(62, 107, 72, 0.15)',
             borderless: true,
             radius: 24,
           }}
@@ -84,7 +84,7 @@ const TaskList = ({
               item.isCompleted ? 'checkbox-marked' : 'checkbox-blank-outline'
             }
             size={32}
-            color={item.isCompleted ? '#FF5C00' : '#71748D'}
+            color={item.isCompleted ? '#3E6B48' : '#5E6250'}
           />
         </Pressable>
 
@@ -111,12 +111,16 @@ const TaskList = ({
           <Pressable
             style={styles.actionButton}
             onPress={() => onEdit(item)}
-            android_ripple={{ color: '#333333', borderless: true, radius: 24 }}
+            android_ripple={{
+              color: 'rgba(43, 45, 38, 0.1)',
+              borderless: true,
+              radius: 24,
+            }}
           >
             <MaterialDesignIcons
               name="pencil-outline"
               size={20}
-              color="#A1A1A1"
+              color="#5E6250"
             />
           </Pressable>
         )}
@@ -124,7 +128,7 @@ const TaskList = ({
           style={styles.actionButton}
           onPress={() => handleDelete(item)}
           android_ripple={{
-            color: 'rgba(255, 92, 0, 0.15)',
+            color: 'rgba(168, 50, 50, 0.15)',
             borderless: true,
             radius: 24,
           }}
@@ -132,7 +136,7 @@ const TaskList = ({
           <MaterialDesignIcons
             name="trash-can-outline"
             size={20}
-            color="#FF5C00"
+            color="#A83232"
           />
         </Pressable>
       </View>
@@ -158,7 +162,7 @@ const TaskList = ({
                 : 'clipboard-list-outline'
             }
             size={64}
-            color="#333333"
+            color="#A3A786"
           />
           <Text style={styles.emptyText}>
             {activeTab === 'Pending'
@@ -186,9 +190,9 @@ const styles = StyleSheet.create({
   },
   taskView: {
     width: '100%',
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F4F2E9',
     borderWidth: 1,
-    borderColor: '#262626',
+    borderColor: '#A3A786',
     borderRadius: 16,
     paddingVertical: 16,
     paddingHorizontal: 12,
@@ -218,12 +222,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   taskTitleBase: {
-    color: '#FFFFFF',
+    color: '#2B2D26',
     fontSize: 16,
     fontWeight: '600',
   },
   isCompletedText: {
-    color: '#71748D',
+    color: '#5E6250',
   },
   strikeLine: {
     position: 'absolute',
@@ -231,11 +235,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1.5,
-    backgroundColor: '#FF5C00',
+    backgroundColor: '#3E6B48',
     transform: [{ translateY: -0.75 }],
   },
   taskDate: {
-    color: '#71748D',
+    color: '#5E6250',
     fontSize: 13,
     marginTop: 4,
   },
@@ -260,7 +264,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   emptyText: {
-    color: '#71748D',
+    color: '#5E6250',
     fontSize: 16,
     textAlign: 'center',
     fontWeight: '600',

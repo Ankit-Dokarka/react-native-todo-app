@@ -47,10 +47,10 @@ const TaskInput = ({
       <TextInput
         style={styles.input}
         placeholder={editingTask ? 'Update your task...' : 'Add a new task...'}
-        placeholderTextColor="#71748D"
+        placeholderTextColor="#5E6250"
         value={text}
         onChangeText={setText}
-        selectionColor="#FF5C00"
+        selectionColor="#B0522E"
       />
 
       {editingTask && (
@@ -61,9 +61,13 @@ const TaskInput = ({
             pressed && styles.buttonPressed,
           ]}
           onPress={cancelEdit}
-          android_ripple={{ color: '#333333', radius: 26, borderless: true }}
+          android_ripple={{
+            color: 'rgba(43, 45, 38, 0.1)',
+            radius: 26,
+            borderless: true,
+          }}
         >
-          <MaterialDesignIcons name="close" size={24} color="#A1A1A1" />
+          <MaterialDesignIcons name="close" size={24} color="#5E6250" />
         </Pressable>
       )}
 
@@ -74,12 +78,16 @@ const TaskInput = ({
           pressed && styles.buttonPressed,
         ]}
         onPress={handlePress}
-        android_ripple={{ color: '#FFFFFF', radius: 26, borderless: true }}
+        android_ripple={{
+          color: 'rgba(244, 242, 233, 0.2)',
+          radius: 26,
+          borderless: true,
+        }}
       >
         <MaterialDesignIcons
           name={editingTask ? 'check' : 'plus'}
           size={28}
-          color="#FFFFFF"
+          color="#F4F2E9"
         />
       </Pressable>
     </View>
@@ -97,13 +105,13 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F4F2E9',
     borderWidth: 1,
-    borderColor: '#333333',
+    borderColor: '#A3A786',
     borderRadius: 16,
     paddingVertical: 16,
     paddingHorizontal: 20,
-    color: '#FFFFFF',
+    color: '#2B2D26',
     fontSize: 16,
     fontWeight: '500',
   },
@@ -115,12 +123,12 @@ const styles = StyleSheet.create({
     borderRadius: 26,
   },
   actionButton: {
-    backgroundColor: '#FF5C00',
+    backgroundColor: '#B0522E',
   },
   cancelButton: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: '#F4F2E9',
     borderWidth: 1,
-    borderColor: '#333333',
+    borderColor: '#A3A786',
   },
   buttonPressed: {
     transform: [{ scale: 0.95 }],
